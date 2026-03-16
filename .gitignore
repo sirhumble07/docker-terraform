@@ -1,0 +1,30 @@
+# Local directory for cached modules and providers
+.terraform/
+
+# Distributed lock file for matching providers
+.terraform.lock.hcl
+
+# Terraform state files (CRITICAL: These may contain passwords/keys)
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+
+# Private override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+.env
+
+# Docker/OS specific
+node_modules/
+*.log
+.DS_Store
+
