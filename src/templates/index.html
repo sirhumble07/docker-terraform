@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infrastructure Control Center</title>
+
+    <!-- Bootstrap 5 & Google Fonts -->
+    <link href="https://cdn.jsdelivr.net" rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-bg: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-purple: #818cf8;
+            --text-color: #0f172a;
+            --muted-text: #64748b;
+            --code-bg: #0b1120;
+            --code-text: #22c55e;
+            --border-color: #cbd5f5;
+            --navbar-bg: rgba(248, 250, 252, 0.9);
+        }
+
+        :root[data-theme="dark"] {
+            --primary-bg: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-purple: #818cf8;
+            --text-color: #f8fafc;
+            --muted-text: #94a3b8;
+            --code-bg: #000000;
+            --code-text: #10b981;
+            --border-color: #334155;
+            --navbar-bg: rgba(15, 23, 42, 0.8);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root[data-theme="system"] {
+                --primary-bg: #0f172a;
+                --card-bg: #1e293b;
+                --accent-blue: #38bdf8;
+                --accent-purple: #818cf8;
+                --text-color: #f8fafc;
+                --muted-text: #94a3b8;
+                --code-bg: #000000;
+                --code-text: #10b981;
+                --border-color: #334155;
+                --navbar-bg: rgba(15, 23, 42, 0.8);
+            }
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--navbar-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .status-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .status-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+        }
+
+        .code-box {
+            background: var(--code-bg);
+            color: var(--code-text);
+            font-family: 'JetBrains Mono', monospace;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .badge-live {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .text-secondary {
+            color: var(--muted-text) !important;
+        }
+
+        .theme-toggle-btn {
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-color);
+            padding: 4px 12px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .theme-toggle-btn:focus-visible {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 2px;
+        }
+
+        .theme-toggle-icon {
+            font-size: 1rem;
+        }
+    </style>
+
+    <script>
+        (function () {
+            const stored = window.localStorage.getItem('icc-theme');
+            const root = document.documentElement;
+
+            if (stored === 'light' || stored === 'dark' || stored === 'system') {
+                root.setAttribute('data-theme', stored);
+            } else {
+                root.setAttribute('data-theme', 'system');
+            }
+        })();
+    </script>
+</head>
+
+<body>
+
+    <nav class="navbar sticky-top">
+        <div class="container d-flex justify-content-between align-items-center py-2">
+            <span class="navbar-brand fw-bold mb-0">
+                Provisioned by <span class="text-info">Victor Nwoke</span>
+            </span>
+
+            <div class="d-flex align-items-center gap-3">
+                <span class="badge bg-success border border-light badge-live">● SYSTEM ONLINE</span>
+
+                <button
+                    type="button"
+                    class="theme-toggle-btn"
+                    id="themeToggle"
+                    aria-label="Toggle color theme"
+                    aria-live="polite">
+                    <span class="theme-toggle-icon" id="themeIcon">🌓</span>
+                    <span id="themeLabel">System</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+
+        <div class="text-center mb-5">
+            <h1 class="display-3 hero-gradient mb-3">Docker + Infrastructure as Code</h1>
+            <p class="text-secondary lead">Automated Provisioning & Container Orchestration via Terraform</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Target Container -->
+            <div class="col-md-5">
+                <div class="status-card p-4 h-100">
+                    <h5 class="text-uppercase text-secondary small fw-bold mb-3">Target Container</h5>
+                    <div class="code-box mb-3">ID: {{ container_id }}</div>
+                    <p class="mb-1 small text-secondary">
+                        Orchestrator: <span class="text-white">Terraform v1.x</span>
+                    </p>
+                    <p class="small text-secondary">
+                        Provider: <span class="text-white">Kreuzwerker/Docker</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Environment Details -->
+            <div class="col-md-5">
+                <div class="status-card p-4 h-100">
+                    <h5 class="text-uppercase text-secondary small fw-bold mb-3">Environment Meta</h5>
+                    <h2 class="fw-bold mb-3 text-info">{{ env }}</h2>
+
+                    <div class="progress bg-dark" style="height: 8px;">
+                        <div class="progress-bar bg-info" style="width: 100%"></div>
+                    </div>
+
+                    <p class="mt-3 small text-secondary fst-italic">
+                        Status: Fully Operational on Port 8080
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="/health" class="btn btn-outline-info px-4 py-2 rounded-pill">
+                View API Health Data
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        (function () {
+            const root = document.documentElement;
+            const btn = document.getElementById('themeToggle');
+            const label = document.getElementById('themeLabel');
+            const icon = document.getElementById('themeIcon');
+
+            const order = ['system', 'light', 'dark'];
+
+            function applyLabel(theme) {
+                if (theme === 'light') {
+                    label.textContent = 'Light';
+                    icon.textContent = '☀️';
+                } else if (theme === 'dark') {
+                    label.textContent = 'Dark';
+                    icon.textContent = '🌙';
+                } else {
+                    label.textContent = 'System';
+                    icon.textContent = '🌓';
+                }
+            }
+
+            function getCurrentTheme() {
+                return root.getAttribute('data-theme') || 'system';
+            }
+
+            function setTheme(theme) {
+                root.setAttribute('data-theme', theme);
+                window.localStorage.setItem('icc-theme', theme);
+                applyLabel(theme);
+            }
+
+            applyLabel(getCurrentTheme());
+
+            btn.addEventListener('click', function () {
+                const current = getCurrentTheme();
+                const idx = order.indexOf(current);
+                const next = order[(idx + 1) % order.length];
+                setTheme(next);
+            });
+        })();
+    </script>
+
+</body>
+</html>
+

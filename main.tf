@@ -10,14 +10,21 @@ terraform {
 }
 
 # Defining Docker Image Data Source
-data "docker_image" "local_image" {
-  name = "pure_image"
+resource "docker_image" "local_image" {
+  name = "pure_image:latest"
+  build {
+   context = "." # Points to the folder where your Dockerfile is
+  }
+   # This forces a rebuild whenever ANY file in your directory changes
+  triggers = {
+   src_hash = sha1(join("", [for f in fileset("${path.module}/src", "**") : filesha1("${path.module}/src/${f}")]))
+  }
 }
 
 # Defining the docker container resource
 resource "docker_container" "pure_image" { 
   name = "pure_image"
-  image = data.docker_image.local_image.name # This uses output from data source
+  image = docker_image.local_image.image_id # This uses output from data source
   
   # Expose port 5000 for Flask app
   ports {

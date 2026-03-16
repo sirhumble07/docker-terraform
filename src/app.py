@@ -1,18 +1,16 @@
 import os
 import socket
-from flask import Flask, jsonify
+from flask import Flask, render_template,jsonify
 
 app = Flask(__name__)
 
 # Route 1: The Main Landing Page
 @app.route('/')
 def home():
-    return jsonify({
-        "status": "success",
-        "message": "Hello from Terraform-managed Docker!",
-        "container_id": socket.gethostname(),
-        "environment": os.getenv("FLASK_ENV", "production")
-    })
+    # render_template sends the HTML file to the browser
+    return render_template('index.html',
+                           container_id=socket.gethostname(),
+                           env=os.getenv("FLASK_ENV", "Production"))
 
 # Route 2: Health Check (Standard for Docker/Kubernetes)
 @app.route('/health')
