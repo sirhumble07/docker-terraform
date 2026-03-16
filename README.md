@@ -47,3 +47,5 @@ Before running this project, ensure you have the following installed:
 * main.tf - Primary configuration for Docker resources and providers.
 * .gitignore - Pre-configured to exclude sensitive .tfstate and .terraform directories.
 * Dockerfile - Defines the application environment.
+* src - stores main application code
+* requirements.txt - dependencies file
