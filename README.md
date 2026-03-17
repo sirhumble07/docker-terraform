@@ -95,7 +95,7 @@ Before running this project, ensure you have the following installed:
 
 1. **Docker Desktop** or **Docker Engine** (running)
 2. **Terraform CLI** (v1.0.0+)
-3. **Local Image:** Ensure your app image is built:
+3. **Local Image:** (Optional):
 
     ```bash
     docker build -t pure_image .
