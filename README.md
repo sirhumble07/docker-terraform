@@ -44,7 +44,7 @@ Before deploying, ensure the following are installed and configured:
 
 1. **Docker Engine** or **Docker Desktop** (running and accessible)
 2. **Terraform CLI** (version 1.0.0 or later)
-3. **Local Docker Image** for the application:
+3. **Local Docker Image** for the application - Optional:
 
     ```bash
     docker build -t pure_image .
