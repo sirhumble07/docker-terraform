@@ -1,6 +1,6 @@
 # Docker Orchestration with Terraform
 
-A professional Infrastructure as Code (IaC) project demonstrating how to automate the lifecycle of Docker containers using Terraform. This setup replaces manual `docker run` commands with a declarative configuration for better reproducibility and scaling.
+An Infrastructure as Code (IaC) project demonstrating how to automate the lifecycle of Docker containers using Terraform. This setup replaces manual `docker run` commands with a declarative configuration for better reproducibility and scaling.
 
 ## Overview
 
